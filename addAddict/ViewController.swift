@@ -68,29 +68,17 @@ class ViewController: UIViewController {
       picked.append(randVal)
     }
 
-    print(indexArray)
-    print(picked)
-
-
-    
-
-//    for i in 1...2 {
-//      let randomIndices = Int(arc4random_uniform(UInt32(indicesArray.count)))
-//      a = operandNums[i]
-//      print("\(a)")
-//      print("randomindice \(randomIndices)")
-//      let removeIndices = indicesArray.remove(at: randomIndices)
-//      print("remove: \(removeIndices)")
-//    }
-
-
-
-    // 랜덤 넘버가 중복 되면 안됨. one & only
-    // 랜덤 넘버 생성 갯수는 2개 for _ in 1...2
-    // 랜덤 넘버 생성 레인지는 operandNums index 안에서
-
-
+    if picked.count == pickNumbers {
+      if let first = picked.first,
+        let second = picked.last {
+        answer = operandNums[first] + operandNums[second]
+      }
+    }
+    print("answer: \(answer)")
+    print("indexArray: \(indexArray)")
+    print("picked index: \(picked)")
   }
+
 
   @IBAction func startBtnTapped(_ sender: UIButton) {
     tappedNums.removeAll()
