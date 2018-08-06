@@ -27,7 +27,8 @@
                                     <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="numberBtnTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ziu-tw-aMs"/>
+                                    <action selector="btnDown:" destination="BYZ-38-t0r" eventType="touchDown" id="VrL-Pw-OSu"/>
+                                    <action selector="btnUp:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ziu-tw-aMs"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7cm-DL-mwu">
@@ -39,7 +40,8 @@
                                     <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="numberBtnTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="266-uf-44S"/>
+                                    <action selector="btnDown:" destination="BYZ-38-t0r" eventType="touchDown" id="QJg-9s-75g"/>
+                                    <action selector="btnUp:" destination="BYZ-38-t0r" eventType="touchUpInside" id="266-uf-44S"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CK5-p0-ja5">
@@ -51,7 +53,8 @@
                                     <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="numberBtnTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Nz7-zp-jzz"/>
+                                    <action selector="btnDown:" destination="BYZ-38-t0r" eventType="touchDown" id="Lbw-1M-RfT"/>
+                                    <action selector="btnUp:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Nz7-zp-jzz"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sf1-oo-aEg">
@@ -71,7 +74,8 @@
                                     <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="numberBtnTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4k4-Wr-C72"/>
+                                    <action selector="btnDown:" destination="BYZ-38-t0r" eventType="touchDown" id="hzX-L8-GT1"/>
+                                    <action selector="btnUp:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4k4-Wr-C72"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fv4-et-zxt">

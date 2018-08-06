@@ -93,9 +93,38 @@ class ViewController: UIViewController {
     answerLabel.text = String(answer)
   }
 
-  @IBAction func numberBtnTapped(_ sender: UIButton) {
-      tappedNums.append(operandNums[sender.tag])
-    print("tappedNums: \(tappedNums)")
+
+  @IBAction func btnDown(_ sender: UIButton) {
+    tappedNums.append(operandNums[sender.tag])
+    print("btnDown: \(tappedNums)")
+  }
+
+  @IBAction func btnUp(_ sender: UIButton) {
+    sender.backgroundColor = #colorLiteral(red: 0.3333333433, green: 0.3333333433, blue: 0.3333333433, alpha: 1)
+  }
+
+
+
+
+//  func flipCard(withNum num: Int, on button: UIButton) {
+//    if button.currentTitle == String(num) {
+//      button.setTitle("", for: UIControlState.disabled)
+//      button.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+//    } else {
+//      button.setTitle(String(num), for: UIControlState.normal)
+//      button.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+//    }
+
+//
+//    func flipcard(withEmoji emoji: String, on button: UIButton) {
+//      if button.currentTitle == emoji {
+//        button.setTitle("", for: UIControlState.normal)
+//        button.backgroundColor = #colorLiteral(red: 1, green: 0.5843137255, blue: 0, alpha: 1)
+//      } else {
+//        button.setTitle(emoji, for: UIControlState.normal)
+//        button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+//      }
+//    }
   }
 
 //  func enableBtns(_ enabled: Bool  ) {
@@ -112,5 +141,5 @@ class ViewController: UIViewController {
 
 
 
-}
+
 
