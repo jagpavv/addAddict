@@ -95,12 +95,20 @@ class ViewController: UIViewController {
 
 
   @IBAction func btnDown(_ sender: UIButton) {
-    tappedNums.append(operandNums[sender.tag])
-    print("btnDown: \(tappedNums)")
+    guard pickNumbers > tappedNums.count else {
+      sender.isEnabled = false
+      return
+    }
+
+    if pickNumbers >= tappedNums.count {
+      tappedNums.append(operandNums[sender.tag])
+      sender.backgroundColor = #colorLiteral(red: 0.3333333433, green: 0.3333333433, blue: 0.3333333433, alpha: 1)
+      sender.setTitleColor(UIColor.white, for: UIControlState.normal)
+    }
   }
 
   @IBAction func btnUp(_ sender: UIButton) {
-    sender.backgroundColor = #colorLiteral(red: 0.3333333433, green: 0.3333333433, blue: 0.3333333433, alpha: 1)
+    sender.isEnabled = false
   }
 
 
