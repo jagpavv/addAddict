@@ -28,7 +28,7 @@
                                 </state>
                                 <connections>
                                     <action selector="btnDown:" destination="BYZ-38-t0r" eventType="touchDown" id="VrL-Pw-OSu"/>
-                                    <action selector="btnUp:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ziu-tw-aMs"/>
+                                    <action selector="btnUp:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Cv2-cT-rJa"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7cm-DL-mwu">
@@ -41,7 +41,7 @@
                                 </state>
                                 <connections>
                                     <action selector="btnDown:" destination="BYZ-38-t0r" eventType="touchDown" id="QJg-9s-75g"/>
-                                    <action selector="btnUp:" destination="BYZ-38-t0r" eventType="touchUpInside" id="266-uf-44S"/>
+                                    <action selector="btnUp:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Lgl-De-sL9"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CK5-p0-ja5">
@@ -54,7 +54,7 @@
                                 </state>
                                 <connections>
                                     <action selector="btnDown:" destination="BYZ-38-t0r" eventType="touchDown" id="Lbw-1M-RfT"/>
-                                    <action selector="btnUp:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Nz7-zp-jzz"/>
+                                    <action selector="btnUp:" destination="BYZ-38-t0r" eventType="touchUpInside" id="mS6-4t-gCg"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sf1-oo-aEg">
@@ -65,6 +65,14 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fv4-et-zxt">
+                                <rect key="frame" x="164" y="449" width="47" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="START"/>
+                                <connections>
+                                    <action selector="startBtnTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0Df-ze-lQ1"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qoz-mU-3Td">
                                 <rect key="frame" x="44" y="135" width="57" height="67"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -75,15 +83,7 @@
                                 </state>
                                 <connections>
                                     <action selector="btnDown:" destination="BYZ-38-t0r" eventType="touchDown" id="hzX-L8-GT1"/>
-                                    <action selector="btnUp:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4k4-Wr-C72"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fv4-et-zxt">
-                                <rect key="frame" x="164" y="449" width="47" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="START"/>
-                                <connections>
-                                    <action selector="startBtnTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0Df-ze-lQ1"/>
+                                    <action selector="btnUp:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Yzq-ag-l4L"/>
                                 </connections>
                             </button>
                         </subviews>
