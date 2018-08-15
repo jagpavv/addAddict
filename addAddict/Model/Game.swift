@@ -3,7 +3,7 @@ import Foundation
 class Game {
   var cards: [Card]
   
-  init(numberOfCards: Int = 4) {
+  init(numberOfCards: Int) {
     print("'Game' model init")
     print("'Game' model is making cards: START")
 
