@@ -7,6 +7,7 @@ class GameViewController: UIViewController {
 
   let numberOfCards = 20
   let numberOfPicks = 2
+  var randomNumUiform = 10
   var answer = 0
   var guess: [Int] = []
   var game: Game?
@@ -16,8 +17,13 @@ class GameViewController: UIViewController {
   }
  
   @IBAction func startBtnTapped(_ sender: UIButton) {
-    game = Game(numberOfCards: numberOfCards)
+    initGame()
+  }
+
+  func initGame() {
+    game = Game(numberOfCards: numberOfCards, randomNumUiform: randomNumUiform)
     startGame()
+    print("randomNumUiform: \(randomNumUiform)")
   }
 
   func startGame() {
@@ -86,6 +92,16 @@ class GameViewController: UIViewController {
   }
 
   func moveToNextStage() {
+    guard let game = game else { return }
+    let pickedCards = game.cards.filter { $0.picked }.count
+
+    if pickedCards == numberOfCards {
+      randomNumUiform += 5
+      initGame()
+    }
+
+    print("pickedCards: \(pickedCards)")
+    
     UIView.animate(withDuration: 0.3, animations: {
       for idx in 0..<self.cardsBaseView.subviews.count {
         guard let card = self.cardsBaseView.subviews[idx] as? CardButton else { continue }
