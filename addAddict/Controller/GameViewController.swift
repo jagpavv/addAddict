@@ -15,6 +15,7 @@ class GameViewController: UIViewController {
     guard guess.count == numberOfPicks else { return false }
     return guess.reduce(0, +) == answer
   }
+  var cardButton: CardButton?
  
   @IBAction func startBtnTapped(_ sender: UIButton) {
     initGame()
@@ -72,9 +73,13 @@ class GameViewController: UIViewController {
       let y = animated ? pad : CGFloat(idx / 4) * (cardHeight + pad) + pad
       let f = CGRect(x: x, y: y, width: cardWidth, height: cardHeight)
 
-      let cardButton = CardButton(index: idx, value: card.value, frame: f, delegate: self)
+      cardButton = CardButton(index: idx, value: card.value, frame: f, delegate: self)
+      cardsBaseView.addSubview(cardButton!)
 
-      cardsBaseView.addSubview(cardButton)
+//      cardButton?.clipsToBounds = true
+//      let cardButton = CardButton(index: idx, value: card.value, frame: f, delegate: self)
+//      cardButton.clipsToBounds = true
+//      cardsBaseView.layer.masksToBounds = true
     }
 
     if animated {
@@ -91,17 +96,19 @@ class GameViewController: UIViewController {
     }
   }
 
-  func moveToNextStage() {
+  func moveToNextAnswer() {
     guard let game = game else { return }
-    let pickedCards = game.cards.filter { $0.picked }.count
+    let pickedCardsCount = game.cards.filter { $0.picked }.count
 
-    if pickedCards == numberOfCards {
+    if pickedCardsCount == numberOfCards {
       randomNumUiform += 5
+      for subview in cardsBaseView.subviews {
+        subview.removeFromSuperview()
+      }
       initGame()
     }
+    print("pickedCards: \(pickedCardsCount)")
 
-    print("pickedCards: \(pickedCards)")
-    
     UIView.animate(withDuration: 0.3, animations: {
       for idx in 0..<self.cardsBaseView.subviews.count {
         guard let card = self.cardsBaseView.subviews[idx] as? CardButton else { continue }
@@ -129,7 +136,15 @@ extension GameViewController: CardButtonDelegate {
     print("guess: \(guess)")
 
     if isGuessCorrect {
-      moveToNextStage()
+      moveToNextAnswer()
     }
+
+//    let pickedCardsCount = game.cards.filter { $0.picked }.count
+//    if isGuessCorrect {
+//      moveToNextAnswer()
+//    } else if isGuessCorrect && game.cards.count == pickedCardsCount {
+//      endGame()
+//      moveToNextStage()
+//    }
   }
 }
