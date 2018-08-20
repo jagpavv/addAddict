@@ -3,7 +3,7 @@ import Foundation
 
 let kNumberOfCards = 20
 let kNumberOfPicks = 2
-let kBestLevelKey = "BestLevel"
+let kHightLevelKey = "HightLevel"
 let KBestTimeKey = "BestTime"
 
 class GameViewController: UIViewController {
@@ -13,6 +13,7 @@ class GameViewController: UIViewController {
   @IBOutlet weak var timerLabel: UILabel!
 
   let userDefault = UserDefaults.standard
+  var level = 1
   var seconds = 0
   var randomNumUiform = 10
   var game: Game?
@@ -24,10 +25,14 @@ class GameViewController: UIViewController {
     return guess.reduce(0, +) == answer
   }
 
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    runTimer()
+  }
+
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(false)
     initGame()
-    runTimer()
   }
 
   @IBAction func startBtnTapped(_ sender: UIButton) {
@@ -43,6 +48,9 @@ class GameViewController: UIViewController {
   func startGame() {
     makeNewAnswer()
     showCards(animated: true)
+
+    print("userDefault: \(userDefault.integer(forKey: kHightLevelKey))")
+    print("current Level: \(level)")
   }
 
   private func makeNewAnswer() {
@@ -65,10 +73,6 @@ class GameViewController: UIViewController {
     } else {
       endGame()
     }
-  }
-
-  func endGame() {
-    print("success, end game")
   }
 
   func showCards(animated: Bool = false) {
@@ -129,15 +133,29 @@ class GameViewController: UIViewController {
 
   func moveToNextLevel(pickedCardsCount: Int) {
     if pickedCardsCount == kNumberOfCards {
+      level += 1
       randomNumUiform += 5
+      print("level: \(level)")
+
+
+      // userDefault Level
+      let storedLevel = userDefault.integer(forKey: kHightLevelKey)
+      let highestLevel = level > storedLevel ? level : storedLevel
+      userDefault.set(highestLevel, forKey: kHightLevelKey)
+      userDefault.synchronize()
+
+      // userDefault time
       for subview in cardsBaseView.subviews {
         subview.removeFromSuperview()
       }
-      initGame()
+      startGame()
     }
     print("pickedCards: \(pickedCardsCount)")
   }
 
+  func endGame() {
+    print("success, end game")
+  }
 
   func runTimer() {
     timer = Timer.scheduledTimer(withTimeInterval: 1,
