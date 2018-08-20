@@ -1,28 +1,41 @@
 import UIKit
+import Foundation
+
+let kNumberOfCards = 20
+let kNumberOfPicks = 2
+let kBestLevelKey = "BestLevel"
+let KBestTimeKey = "BestTime"
 
 class GameViewController: UIViewController {
 
   @IBOutlet weak var answerLabel: UILabel!
   @IBOutlet weak var cardsBaseView: UIView!
+  @IBOutlet weak var timerLabel: UILabel!
 
-  let numberOfCards = 20
-  let numberOfPicks = 2
+  let userDefault = UserDefaults.standard
+  var seconds = 0
   var randomNumUiform = 10
+  var game: Game?
+  var timer: Timer?
   var answer = 0
   var guess: [Int] = []
-  var game: Game?
   var isGuessCorrect: Bool {
-    guard guess.count == numberOfPicks else { return false }
+    guard guess.count == kNumberOfPicks else { return false }
     return guess.reduce(0, +) == answer
   }
-  var cardButton: CardButton?
- 
-  @IBAction func startBtnTapped(_ sender: UIButton) {
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(false)
     initGame()
+    runTimer()
+  }
+
+  @IBAction func startBtnTapped(_ sender: UIButton) {
+    // change to pause the game? done game?
   }
 
   func initGame() {
-    game = Game(numberOfCards: numberOfCards, randomNumUiform: randomNumUiform)
+    game = Game(numberOfCards: kNumberOfCards, randomNumUiform: randomNumUiform)
     startGame()
     print("randomNumUiform: \(randomNumUiform)")
   }
@@ -30,10 +43,6 @@ class GameViewController: UIViewController {
   func startGame() {
     makeNewAnswer()
     showCards(animated: true)
-  }
-
-  func endGame() {
-    print("success, end game")
   }
 
   private func makeNewAnswer() {
@@ -45,7 +54,7 @@ class GameViewController: UIViewController {
     var cards = game.cards.filter { !$0.picked }
 
     if cards.count > 0 {
-      for _ in 0..<numberOfPicks {
+      for _ in 0..<kNumberOfPicks {
         let randomIndex = Int(arc4random_uniform(UInt32(cards.count)))
         let ramdomValue = cards[randomIndex].value
         print(ramdomValue)
@@ -56,6 +65,10 @@ class GameViewController: UIViewController {
     } else {
       endGame()
     }
+  }
+
+  func endGame() {
+    print("success, end game")
   }
 
   func showCards(animated: Bool = false) {
@@ -73,13 +86,8 @@ class GameViewController: UIViewController {
       let y = animated ? pad : CGFloat(idx / 4) * (cardHeight + pad) + pad
       let f = CGRect(x: x, y: y, width: cardWidth, height: cardHeight)
 
-      cardButton = CardButton(index: idx, value: card.value, frame: f, delegate: self)
-      cardsBaseView.addSubview(cardButton!)
-
-//      cardButton?.clipsToBounds = true
-//      let cardButton = CardButton(index: idx, value: card.value, frame: f, delegate: self)
-//      cardButton.clipsToBounds = true
-//      cardsBaseView.layer.masksToBounds = true
+      let cardButton = CardButton(index: idx, value: card.value, frame: f, delegate: self)
+      cardsBaseView.addSubview(cardButton)
     }
 
     if animated {
@@ -96,19 +104,19 @@ class GameViewController: UIViewController {
     }
   }
 
-  func moveToNextAnswer() {
+  func moveTo() {
     guard let game = game else { return }
     let pickedCardsCount = game.cards.filter { $0.picked }.count
 
-    if pickedCardsCount == numberOfCards {
-      randomNumUiform += 5
-      for subview in cardsBaseView.subviews {
-        subview.removeFromSuperview()
+    if isGuessCorrect {
+      moveToNextAnswer()
+      if pickedCardsCount == kNumberOfCards {
+        moveToNextLevel(pickedCardsCount: pickedCardsCount)
       }
-      initGame()
     }
-    print("pickedCards: \(pickedCardsCount)")
+  }
 
+  func moveToNextAnswer() {
     UIView.animate(withDuration: 0.3, animations: {
       for idx in 0..<self.cardsBaseView.subviews.count {
         guard let card = self.cardsBaseView.subviews[idx] as? CardButton else { continue }
@@ -118,13 +126,35 @@ class GameViewController: UIViewController {
       self.makeNewAnswer()
     }
   }
+
+  func moveToNextLevel(pickedCardsCount: Int) {
+    if pickedCardsCount == kNumberOfCards {
+      randomNumUiform += 5
+      for subview in cardsBaseView.subviews {
+        subview.removeFromSuperview()
+      }
+      initGame()
+    }
+    print("pickedCards: \(pickedCardsCount)")
+  }
+
+
+  func runTimer() {
+    timer = Timer.scheduledTimer(withTimeInterval: 1,
+                                 repeats: true,
+                                 block: { _ in
+                                  self.seconds += 1
+                                  self.timerLabel.text = String(self.seconds)
+    })
+  }
+
 }
 
 extension GameViewController: CardButtonDelegate {
   func cardButtonTapped(button: CardButton) {
     guard let game = game else { return }
 
-    if !button.isPicked, guess.count < numberOfPicks {
+    if !button.isPicked, guess.count < kNumberOfPicks {
       game.cards[button.index].picked = true
       button.isPicked = true
       guess.append(button.value)
@@ -134,17 +164,6 @@ extension GameViewController: CardButtonDelegate {
       guess = guess.filter { $0 != button.value }
     }
     print("guess: \(guess)")
-
-    if isGuessCorrect {
-      moveToNextAnswer()
-    }
-
-//    let pickedCardsCount = game.cards.filter { $0.picked }.count
-//    if isGuessCorrect {
-//      moveToNextAnswer()
-//    } else if isGuessCorrect && game.cards.count == pickedCardsCount {
-//      endGame()
-//      moveToNextStage()
-//    }
+    moveTo()
   }
 }
