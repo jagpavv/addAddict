@@ -10,6 +10,7 @@ class GameViewController: UIViewController {
 
   @IBOutlet weak var answerLabel: UILabel!
   @IBOutlet weak var cardsBaseView: UIView!
+  @IBOutlet weak var levelLabel: UILabel!
   @IBOutlet weak var timerLabel: UILabel!
 
   let userDefault = UserDefaults.standard
@@ -24,10 +25,12 @@ class GameViewController: UIViewController {
     guard guess.count == kNumberOfPicks else { return false }
     return guess.reduce(0, +) == answer
   }
+  var timerIsOn = false
 
   override func viewDidLoad() {
     super.viewDidLoad()
     runTimer()
+    timerIsOn = true
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -35,8 +38,18 @@ class GameViewController: UIViewController {
     initGame()
   }
 
-  @IBAction func startBtnTapped(_ sender: UIButton) {
-    // change to pause the game? done game?
+  @IBAction func startPauseBtnTapped(_ sender: UIButton) {
+    if timerIsOn {
+      timerIsOn = false
+      timer?.invalidate()
+
+      sender.setTitle("▶︎", for: .normal)
+      sender.titleLabel?.font = UIFont.systemFont(ofSize: 20)
+    } else {
+      runTimer()
+      sender.setTitle("||", for: .normal)
+
+    }
   }
 
   func initGame() {
@@ -49,8 +62,11 @@ class GameViewController: UIViewController {
     makeNewAnswer()
     showCards(animated: true)
 
-    print("userDefault: \(userDefault.integer(forKey: kHightLevelKey))")
+    print("userDefault Level: \(userDefault.integer(forKey: kHightLevelKey))")
     print("current Level: \(level)")
+
+    print("userDefault time: \(userDefault.integer(forKey: KBestTimeKey))")
+    print("current time: \(seconds)")
   }
 
   private func makeNewAnswer() {
@@ -145,6 +161,14 @@ class GameViewController: UIViewController {
       userDefault.synchronize()
 
       // userDefault time
+      if userDefault.integer(forKey: KBestTimeKey) == 0 {
+        userDefault.set(seconds, forKey: KBestTimeKey)
+      } else {
+      let storedTime = userDefault.integer(forKey: KBestTimeKey)
+      let shortestTime = seconds < storedTime ? seconds : storedTime
+      userDefault.set(shortestTime, forKey: KBestTimeKey)
+      userDefault.synchronize()
+      }
 
       for subview in cardsBaseView.subviews {
         subview.removeFromSuperview()
@@ -167,12 +191,10 @@ class GameViewController: UIViewController {
                                   let min = (self.seconds / 60) % 60
                                   let sec = self.seconds % 60
 
-                                  let minSecMilSec = String(format: "%0.2d : %0.2d", min, sec)
-                                  self.timerLabel.text = minSecMilSec
-//                                  self.timerLabel.text = String(self.seconds)
+                                  let minSec = String(format: "%0.2d : %0.2d", min, sec)
+                                  self.timerLabel.text = minSec
     })
   }
-
 }
 
 extension GameViewController: CardButtonDelegate {
