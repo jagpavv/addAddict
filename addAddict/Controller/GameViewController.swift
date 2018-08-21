@@ -145,6 +145,7 @@ class GameViewController: UIViewController {
       userDefault.synchronize()
 
       // userDefault time
+
       for subview in cardsBaseView.subviews {
         subview.removeFromSuperview()
       }
@@ -162,7 +163,13 @@ class GameViewController: UIViewController {
                                  repeats: true,
                                  block: { _ in
                                   self.seconds += 1
-                                  self.timerLabel.text = String(self.seconds)
+
+                                  let min = (self.seconds / 60) % 60
+                                  let sec = self.seconds % 60
+
+                                  let minSecMilSec = String(format: "%0.2d : %0.2d", min, sec)
+                                  self.timerLabel.text = minSecMilSec
+//                                  self.timerLabel.text = String(self.seconds)
     })
   }
 
