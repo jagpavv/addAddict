@@ -27,6 +27,8 @@ class CardButton: UIButton {
     self.backgroundColor = .white
     self.titleLabel?.font = UIFont.boldSystemFont(ofSize: 40)
     self.addTarget(self, action: #selector(cardBtnTapped), for: .touchUpInside)
+    self.layer.cornerRadius = self.frame.width / 6
+
   }
 
   required init?(coder aDecoder: NSCoder) {

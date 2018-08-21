@@ -34,8 +34,15 @@ class GameViewController: UIViewController {
   }
 
   override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(false)
+    super.viewDidAppear(animated)
     initGame()
+
+//    for btn in cardsBaseView.subviews {
+//      btn.layer.cornerRadius = btn.frame.width / 2
+//    }
+
+//    cardButton.layer.cornerRadius = cardButton.frame.height / 2
+
   }
 
   @IBAction func startPauseBtnTapped(_ sender: UIButton) {
@@ -44,11 +51,11 @@ class GameViewController: UIViewController {
       timer?.invalidate()
 
       sender.setTitle("▶︎", for: .normal)
-      sender.titleLabel?.font = UIFont.systemFont(ofSize: 20)
+      sender.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
     } else {
       runTimer()
-      sender.setTitle("||", for: .normal)
 
+      sender.setTitle("||", for: .normal)
     }
   }
 
