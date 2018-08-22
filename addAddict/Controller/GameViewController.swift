@@ -25,49 +25,35 @@ class GameViewController: UIViewController {
     guard guess.count == kNumberOfPicks else { return false }
     return guess.reduce(0, +) == answer
   }
-  var timerIsOn = false
 
   override func viewDidLoad() {
     super.viewDidLoad()
     runTimer()
-    timerIsOn = true
   }
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    initGame()
-
-//    for btn in cardsBaseView.subviews {
-//      btn.layer.cornerRadius = btn.frame.width / 2
-//    }
-
-//    cardButton.layer.cornerRadius = cardButton.frame.height / 2
-
+    startGame()
   }
 
   @IBAction func startPauseBtnTapped(_ sender: UIButton) {
-    if timerIsOn {
-      timerIsOn = false
+    if timer?.isValid == true {
       timer?.invalidate()
 
       sender.setTitle("▶︎", for: .normal)
       sender.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
     } else {
       runTimer()
-
       sender.setTitle("||", for: .normal)
     }
   }
 
-  func initGame() {
-    game = Game(numberOfCards: kNumberOfCards, randomNumUiform: randomNumUiform)
-    startGame()
-    print("randomNumUiform: \(randomNumUiform)")
-  }
-
   func startGame() {
+    game = Game(numberOfCards: kNumberOfCards, randomNumUiform: randomNumUiform)
     makeNewAnswer()
     showCards(animated: true)
+
+    print("randomNumUiform: \(randomNumUiform)")
 
     print("userDefault Level: \(userDefault.integer(forKey: kHightLevelKey))")
     print("current Level: \(level)")
@@ -138,7 +124,10 @@ class GameViewController: UIViewController {
     if isGuessCorrect {
       moveToNextAnswer()
       if pickedCardsCount == kNumberOfCards {
-        moveToNextLevel(pickedCardsCount: pickedCardsCount)
+        for subview in cardsBaseView.subviews {
+          subview.removeFromSuperview()
+        }
+        moveToNextLevel()
       }
     }
   }
@@ -154,8 +143,11 @@ class GameViewController: UIViewController {
     }
   }
 
-  func moveToNextLevel(pickedCardsCount: Int) {
-    if pickedCardsCount == kNumberOfCards {
+  func moveToNextLevel() {
+//    guard let game = game else { return }
+//    let pickedCardsCount = game.cards.filter { $0.picked }.count
+
+//    if pickedCardsCount == kNumberOfCards {
       level += 1
       randomNumUiform += 5
       print("level: \(level)")
@@ -171,18 +163,13 @@ class GameViewController: UIViewController {
       if userDefault.integer(forKey: KBestTimeKey) == 0 {
         userDefault.set(seconds, forKey: KBestTimeKey)
       } else {
-      let storedTime = userDefault.integer(forKey: KBestTimeKey)
-      let shortestTime = seconds < storedTime ? seconds : storedTime
-      userDefault.set(shortestTime, forKey: KBestTimeKey)
-      userDefault.synchronize()
-      }
-
-      for subview in cardsBaseView.subviews {
-        subview.removeFromSuperview()
+        let storedTime = userDefault.integer(forKey: KBestTimeKey)
+        let shortestTime = seconds < storedTime ? seconds : storedTime
+        userDefault.set(shortestTime, forKey: KBestTimeKey)
+        userDefault.synchronize()
       }
       startGame()
-    }
-    print("pickedCards: \(pickedCardsCount)")
+//    }
   }
 
   func endGame() {
@@ -190,6 +177,9 @@ class GameViewController: UIViewController {
   }
 
   func runTimer() {
+    if timer != nil {
+      timer?.invalidate()
+    }
     timer = Timer.scheduledTimer(withTimeInterval: 1,
                                  repeats: true,
                                  block: { _ in
