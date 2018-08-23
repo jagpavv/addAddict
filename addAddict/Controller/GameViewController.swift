@@ -87,6 +87,8 @@ class GameViewController: UIViewController {
   func showCards(animated: Bool = false) {
     guard let game = game else { return }
 
+    cardsBaseView.layer.cornerRadius = cardsBaseView.frame.width / 20
+
     let pad: CGFloat = 10.0
     let totalWidth = cardsBaseView.frame.width
     let totalHeight = cardsBaseView.frame.height
@@ -144,10 +146,6 @@ class GameViewController: UIViewController {
   }
 
   func moveToNextLevel() {
-//    guard let game = game else { return }
-//    let pickedCardsCount = game.cards.filter { $0.picked }.count
-
-//    if pickedCardsCount == kNumberOfCards {
       level += 1
       randomNumUiform += 5
       print("level: \(level)")
@@ -188,7 +186,7 @@ class GameViewController: UIViewController {
                                   let min = (self.seconds / 60) % 60
                                   let sec = self.seconds % 60
 
-                                  let minSec = String(format: "%0.2d : %0.2d", min, sec)
+                                  let minSec = String(format: "Time. %0.2d : %0.2d", min, sec)
                                   self.timerLabel.text = minSec
     })
   }
