@@ -9,8 +9,8 @@ class CardButton: UIButton {
   var index: Int
   var isPicked: Bool = false {
     didSet {
-      self.backgroundColor = isPicked ? #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1) : #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-      self.setTitleColor(isPicked ? #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1) : #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1) , for: .disabled)
+      self.backgroundColor = isPicked ? #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1) : #colorLiteral(red: 1, green: 0.8, blue: 0, alpha: 1)
+      self.setTitleColor(isPicked ? #colorLiteral(red: 1, green: 0.8, blue: 0, alpha: 1) : #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1) , for: .disabled)
     }
   }
   weak var delegate: CardButtonDelegate?
@@ -23,8 +23,8 @@ class CardButton: UIButton {
     super.init(frame: frame)
 
     self.setTitle(String(value), for: .normal)
-    self.setTitleColor(.black, for: .normal)
-    self.backgroundColor = .white
+    self.setTitleColor(#colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1), for: .normal)
+    self.backgroundColor = #colorLiteral(red: 1, green: 0.8, blue: 0, alpha: 1)
     self.titleLabel?.font = UIFont.boldSystemFont(ofSize: 40)
     self.addTarget(self, action: #selector(cardBtnTapped), for: .touchUpInside)
     self.layer.cornerRadius = self.frame.width / 6

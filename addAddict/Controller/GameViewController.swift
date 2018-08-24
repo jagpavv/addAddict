@@ -87,6 +87,8 @@ class GameViewController: UIViewController {
   func showCards(animated: Bool = false) {
     guard let game = game else { return }
 
+    cardsBaseView.layer.cornerRadius = cardsBaseView.frame.width / 20
+
     let pad: CGFloat = 10.0
     let totalWidth = cardsBaseView.frame.width
     let totalHeight = cardsBaseView.frame.height
@@ -144,32 +146,29 @@ class GameViewController: UIViewController {
   }
 
   func moveToNextLevel() {
-//    guard let game = game else { return }
-//    let pickedCardsCount = game.cards.filter { $0.picked }.count
+    level += 1
+    randomNumUiform += 5
 
-//    if pickedCardsCount == kNumberOfCards {
-      level += 1
-      randomNumUiform += 5
-      print("level: \(level)")
+    levelLabel.text = String("LV. \(level)")
 
 
-      // userDefault Level
-      let storedLevel = userDefault.integer(forKey: kHightLevelKey)
-      let highestLevel = level > storedLevel ? level : storedLevel
-      userDefault.set(highestLevel, forKey: kHightLevelKey)
+    // userDefault Level
+    let storedLevel = userDefault.integer(forKey: kHightLevelKey)
+    let highestLevel = level > storedLevel ? level : storedLevel
+    userDefault.set(highestLevel, forKey: kHightLevelKey)
+    userDefault.synchronize()
+
+    // userDefault time
+    if userDefault.integer(forKey: KBestTimeKey) == 0 {
+      userDefault.set(seconds, forKey: KBestTimeKey)
+    } else {
+      let storedTime = userDefault.integer(forKey: KBestTimeKey)
+      let shortestTime = seconds < storedTime ? seconds : storedTime
+      userDefault.set(shortestTime, forKey: KBestTimeKey)
       userDefault.synchronize()
-
-      // userDefault time
-      if userDefault.integer(forKey: KBestTimeKey) == 0 {
-        userDefault.set(seconds, forKey: KBestTimeKey)
-      } else {
-        let storedTime = userDefault.integer(forKey: KBestTimeKey)
-        let shortestTime = seconds < storedTime ? seconds : storedTime
-        userDefault.set(shortestTime, forKey: KBestTimeKey)
-        userDefault.synchronize()
-      }
-      startGame()
-//    }
+    }
+    startGame()
+    //    }
   }
 
   func endGame() {
@@ -188,7 +187,7 @@ class GameViewController: UIViewController {
                                   let min = (self.seconds / 60) % 60
                                   let sec = self.seconds % 60
 
-                                  let minSec = String(format: "%0.2d : %0.2d", min, sec)
+                                  let minSec = String(format: "Time. %0.2d : %0.2d", min, sec)
                                   self.timerLabel.text = minSec
     })
   }
