@@ -146,28 +146,29 @@ class GameViewController: UIViewController {
   }
 
   func moveToNextLevel() {
-      level += 1
-      randomNumUiform += 5
-      print("level: \(level)")
+    level += 1
+    randomNumUiform += 5
+
+    levelLabel.text = String("LV. \(level)")
 
 
-      // userDefault Level
-      let storedLevel = userDefault.integer(forKey: kHightLevelKey)
-      let highestLevel = level > storedLevel ? level : storedLevel
-      userDefault.set(highestLevel, forKey: kHightLevelKey)
+    // userDefault Level
+    let storedLevel = userDefault.integer(forKey: kHightLevelKey)
+    let highestLevel = level > storedLevel ? level : storedLevel
+    userDefault.set(highestLevel, forKey: kHightLevelKey)
+    userDefault.synchronize()
+
+    // userDefault time
+    if userDefault.integer(forKey: KBestTimeKey) == 0 {
+      userDefault.set(seconds, forKey: KBestTimeKey)
+    } else {
+      let storedTime = userDefault.integer(forKey: KBestTimeKey)
+      let shortestTime = seconds < storedTime ? seconds : storedTime
+      userDefault.set(shortestTime, forKey: KBestTimeKey)
       userDefault.synchronize()
-
-      // userDefault time
-      if userDefault.integer(forKey: KBestTimeKey) == 0 {
-        userDefault.set(seconds, forKey: KBestTimeKey)
-      } else {
-        let storedTime = userDefault.integer(forKey: KBestTimeKey)
-        let shortestTime = seconds < storedTime ? seconds : storedTime
-        userDefault.set(shortestTime, forKey: KBestTimeKey)
-        userDefault.synchronize()
-      }
-      startGame()
-//    }
+    }
+    startGame()
+    //    }
   }
 
   func endGame() {
