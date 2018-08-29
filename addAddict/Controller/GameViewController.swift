@@ -23,10 +23,13 @@ class GameViewController: UIViewController {
   var timer: Timer?
   var answer = 0
   var guess: [Int] = []
+  var firstGuessButton: CardButton?
+  var secondGuessButton: CardButton?
   var isGuessCorrect: Bool {
     guard guess.count == kNumberOfPicks else { return false }
     return guess.reduce(0, +) == answer
   }
+  var value: Int = 0
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -72,11 +75,15 @@ class GameViewController: UIViewController {
       let fa = CGRect(x: 0, y: 0, width: answerBaseView.frame.width, height: answerBaseView.frame.height)
       let ff = CGRect(x: 0, y: 0, width: firstGuessBaseView.frame.width, height: firstGuessBaseView.frame.height)
       let answerButton = CardButton(type: .answer, frame: fa, value: answer)
-      let firstGuessButton = CardButton(type: .guess, frame: ff)
-      let secondGuessButton = CardButton(type: .guess, frame: ff)
+      firstGuessButton = CardButton(type: .guess, frame: ff)
+      secondGuessButton = CardButton(type: .guess, frame: ff)
       answerBaseView.addSubview(answerButton)
-      firstGuessBaseView.addSubview(firstGuessButton)
-      secondGuessBaseView.addSubview(secondGuessButton)
+      if let firstGuessButton = firstGuessButton {
+        firstGuessBaseView.addSubview(firstGuessButton)
+      }
+      if let secondGuessButton = secondGuessButton {
+        secondGuessBaseView.addSubview(secondGuessButton)
+      }
     } else {
       endGame()
     }
@@ -195,6 +202,19 @@ extension GameViewController: CardButtonDelegate {
       game.cards[button.index].picked = false
       button.isPicked = false
       guess = guess.filter { $0 != button.value }
+    }
+    switch guess.count {
+    case 0:
+      firstGuessButton?.value = CardButton.unusedValue
+      secondGuessButton?.value = CardButton.unusedValue
+    case 1:
+      firstGuessButton?.value = guess[0]
+      secondGuessButton?.value = CardButton.unusedValue
+    case 2:
+      firstGuessButton?.value = guess[0]
+      secondGuessButton?.value = guess[1]
+    default:
+      break
     }
     moveTo()
   }
