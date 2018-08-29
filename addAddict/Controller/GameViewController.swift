@@ -8,7 +8,9 @@ let KBestTimeKey = "BestTime"
 
 class GameViewController: UIViewController {
 
-  @IBOutlet weak var answerLabel: UILabel!
+  @IBOutlet weak var answerBaseView: UIView!
+  @IBOutlet weak var firstGuessBaseView: UIView!
+  @IBOutlet weak var secondGuessBaseView: UIView!
   @IBOutlet weak var cardsBaseView: UIView!
   @IBOutlet weak var levelLabel: UILabel!
   @IBOutlet weak var timerLabel: UILabel!
@@ -21,10 +23,13 @@ class GameViewController: UIViewController {
   var timer: Timer?
   var answer = 0
   var guess: [Int] = []
+  var firstGuessButton: CardButton?
+  var secondGuessButton: CardButton?
   var isGuessCorrect: Bool {
     guard guess.count == kNumberOfPicks else { return false }
     return guess.reduce(0, +) == answer
   }
+  var value: Int = 0
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -34,18 +39,6 @@ class GameViewController: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     startGame()
-  }
-
-  @IBAction func startPauseBtnTapped(_ sender: UIButton) {
-    if timer?.isValid == true {
-      timer?.invalidate()
-
-      sender.setTitle("▶︎", for: .normal)
-      sender.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-    } else {
-      runTimer()
-      sender.setTitle("||", for: .normal)
-    }
   }
 
   func startGame() {
@@ -78,7 +71,19 @@ class GameViewController: UIViewController {
         answer += ramdomValue
         cards.remove(at: randomIndex)
       }
-      answerLabel.text = String(answer)
+
+      let fa = CGRect(x: 0, y: 0, width: answerBaseView.frame.width, height: answerBaseView.frame.height)
+      let ff = CGRect(x: 0, y: 0, width: firstGuessBaseView.frame.width, height: firstGuessBaseView.frame.height)
+      let answerButton = CardButton(type: .answer, frame: fa, value: answer)
+      firstGuessButton = CardButton(type: .guess, frame: ff)
+      secondGuessButton = CardButton(type: .guess, frame: ff)
+      answerBaseView.addSubview(answerButton)
+      if let firstGuessButton = firstGuessButton {
+        firstGuessBaseView.addSubview(firstGuessButton)
+      }
+      if let secondGuessButton = secondGuessButton {
+        secondGuessBaseView.addSubview(secondGuessButton)
+      }
     } else {
       endGame()
     }
@@ -86,8 +91,6 @@ class GameViewController: UIViewController {
 
   func showCards(animated: Bool = false) {
     guard let game = game else { return }
-
-    cardsBaseView.layer.cornerRadius = cardsBaseView.frame.width / 20
 
     let pad: CGFloat = 10.0
     let totalWidth = cardsBaseView.frame.width
@@ -148,9 +151,7 @@ class GameViewController: UIViewController {
   func moveToNextLevel() {
     level += 1
     randomNumUiform += 5
-
-    levelLabel.text = String("LV. \(level)")
-
+    levelLabel.text = String("Lv \(level)")
 
     // userDefault Level
     let storedLevel = userDefault.integer(forKey: kHightLevelKey)
@@ -168,7 +169,6 @@ class GameViewController: UIViewController {
       userDefault.synchronize()
     }
     startGame()
-    //    }
   }
 
   func endGame() {
@@ -176,18 +176,14 @@ class GameViewController: UIViewController {
   }
 
   func runTimer() {
-    if timer != nil {
-      timer?.invalidate()
-    }
+    if let timer = timer { timer.invalidate() }
     timer = Timer.scheduledTimer(withTimeInterval: 1,
                                  repeats: true,
                                  block: { _ in
                                   self.seconds += 1
-
                                   let min = (self.seconds / 60) % 60
                                   let sec = self.seconds % 60
-
-                                  let minSec = String(format: "Time. %0.2d : %0.2d", min, sec)
+                                  let minSec = String(format: "%0.2d:%0.2d", min, sec)
                                   self.timerLabel.text = minSec
     })
   }
@@ -201,12 +197,25 @@ extension GameViewController: CardButtonDelegate {
       game.cards[button.index].picked = true
       button.isPicked = true
       guess.append(button.value)
+
     } else {
       game.cards[button.index].picked = false
       button.isPicked = false
       guess = guess.filter { $0 != button.value }
     }
-    print("guess: \(guess)")
+    switch guess.count {
+    case 0:
+      firstGuessButton?.value = CardButton.unusedValue
+      secondGuessButton?.value = CardButton.unusedValue
+    case 1:
+      firstGuessButton?.value = guess[0]
+      secondGuessButton?.value = CardButton.unusedValue
+    case 2:
+      firstGuessButton?.value = guess[0]
+      secondGuessButton?.value = guess[1]
+    default:
+      break
+    }
     moveTo()
   }
 }
