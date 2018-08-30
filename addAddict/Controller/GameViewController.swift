@@ -193,16 +193,27 @@ extension GameViewController: CardButtonDelegate {
   func cardButtonTapped(button: CardButton) {
     guard let game = game else { return }
 
+    if guess.count == kNumberOfPicks, !button.isPicked {
+      return
+    }
+
     if !button.isPicked, guess.count < kNumberOfPicks {
       game.cards[button.index].picked = true
       button.isPicked = true
       guess.append(button.value)
 
     } else {
+
       game.cards[button.index].picked = false
       button.isPicked = false
-      guess = guess.filter { $0 != button.value }
+      for (i, v) in guess.enumerated() {
+        if v == button.value {
+          guess.remove(at: i)
+          break
+        }
+      }
     }
+
     switch guess.count {
     case 0:
       firstGuessButton?.value = CardButton.unusedValue
