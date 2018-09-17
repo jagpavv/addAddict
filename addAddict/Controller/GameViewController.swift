@@ -1,5 +1,6 @@
 import UIKit
 import Foundation
+import AVFoundation
 
 let kNumberOfCards = 20
 let kNumberOfPicks = 2
@@ -30,6 +31,7 @@ class GameViewController: UIViewController {
     return guess.reduce(0, +) == answer
   }
   var value: Int = 0
+  var audioPlayer: AVAudioPlayer = AVAudioPlayer()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -39,6 +41,7 @@ class GameViewController: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     startGame()
+    playSound(soundName: "upNextStage")
   }
 
   func startGame() {
@@ -133,6 +136,7 @@ class GameViewController: UIViewController {
           subview.removeFromSuperview()
         }
         moveToNextLevel()
+        playSound(soundName: "upNextStage")
       }
     }
   }
@@ -187,6 +191,18 @@ class GameViewController: UIViewController {
                                   self.timerLabel.text = minSec
     })
   }
+
+  func playSound(soundName: String) {
+    let audioPath = Bundle.main.path(forResource: soundName, ofType: "wav", inDirectory: "audio")!
+    let url = URL(fileURLWithPath: audioPath, isDirectory: true)
+
+    do {
+      audioPlayer = try AVAudioPlayer(contentsOf: url)
+    } catch {
+      print("noooo....")
+    }
+    audioPlayer.play()
+  }
 }
 
 extension GameViewController: CardButtonDelegate {
@@ -227,6 +243,7 @@ extension GameViewController: CardButtonDelegate {
     default:
       break
     }
+    playSound(soundName: "sound0")
     moveTo()
   }
 }
