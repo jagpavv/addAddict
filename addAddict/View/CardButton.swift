@@ -11,6 +11,8 @@ enum CardType {
 }
 
 class CardButton: UIButton {
+
+  // MARK: - Properties
   static let unusedIndex = -1
   static let unusedValue = -1
 
@@ -29,6 +31,7 @@ class CardButton: UIButton {
   }
   weak var delegate: CardButtonDelegate?
 
+  // MARK: - Initializers
   init(index: Int, value: Int, frame: CGRect, delegate: CardButtonDelegate? = nil) {
     self.type = .card
     self.index = index
@@ -47,6 +50,12 @@ class CardButton: UIButton {
     setupUI()
   }
 
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  // MARK: - Methods
+  // MARK: Custom Method
   func setupUI() {
     self.setTitleColor(#colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1), for: .normal)
     self.backgroundColor = #colorLiteral(red: 1, green: 0.8, blue: 0, alpha: 1)
@@ -72,10 +81,6 @@ class CardButton: UIButton {
       self.backgroundColor = #colorLiteral(red: 1, green: 0.8, blue: 0, alpha: 1)
     }
     self.setTitle(title, for: .normal)
-  }
-
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
   }
 
   @objc func cardBtnTapped(sender: UIButton) {
