@@ -5,10 +5,11 @@ import AVFoundation
 let kNumberOfCards = 20
 let kNumberOfPicks = 2
 let kHightLevelKey = "HightLevel"
-let KBestTimeKey = "BestTime"
+let kBestTimeKey = "BestTime"
 
 class GameViewController: UIViewController {
 
+  // MARK: IBOutlets
   @IBOutlet weak var answerBaseView: UIView!
   @IBOutlet weak var firstGuessBaseView: UIView!
   @IBOutlet weak var secondGuessBaseView: UIView!
@@ -16,6 +17,7 @@ class GameViewController: UIViewController {
   @IBOutlet weak var levelLabel: UILabel!
   @IBOutlet weak var timerLabel: UILabel!
 
+  // MARK: - Properties
   let userDefault = UserDefaults.standard
   var level = 1
   var seconds = 0
@@ -44,6 +46,8 @@ class GameViewController: UIViewController {
     playSound(soundName: "upNextStage")
   }
 
+  // MARK: - Methods
+  // MARK: Custom Method
   func startGame() {
     game = Game(numberOfCards: kNumberOfCards, randomNumUiform: randomNumUiform)
     makeNewAnswer()
@@ -54,7 +58,7 @@ class GameViewController: UIViewController {
     print("userDefault Level: \(userDefault.integer(forKey: kHightLevelKey))")
     print("current Level: \(level)")
 
-    print("userDefault time: \(userDefault.integer(forKey: KBestTimeKey))")
+    print("userDefault time: \(userDefault.integer(forKey: kBestTimeKey))")
     print("current time: \(seconds)")
   }
 
@@ -164,12 +168,12 @@ class GameViewController: UIViewController {
     userDefault.synchronize()
 
     // userDefault time
-    if userDefault.integer(forKey: KBestTimeKey) == 0 {
-      userDefault.set(seconds, forKey: KBestTimeKey)
+    if userDefault.integer(forKey: kBestTimeKey) == 0 {
+      userDefault.set(seconds, forKey: kBestTimeKey)
     } else {
-      let storedTime = userDefault.integer(forKey: KBestTimeKey)
+      let storedTime = userDefault.integer(forKey: kBestTimeKey)
       let shortestTime = seconds < storedTime ? seconds : storedTime
-      userDefault.set(shortestTime, forKey: KBestTimeKey)
+      userDefault.set(shortestTime, forKey: kBestTimeKey)
       userDefault.synchronize()
     }
     startGame()
@@ -205,6 +209,7 @@ class GameViewController: UIViewController {
   }
 }
 
+// MARK: - extension
 extension GameViewController: CardButtonDelegate {
   func cardButtonTapped(button: CardButton) {
     guard let game = game else { return }
